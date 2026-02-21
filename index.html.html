@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Adversarios ADM</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+/* MODAL DARK WEB */
+
+.dark-modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+
+.dark-modal-content{
+  background:#111;
+  padding:40px;
+  width:400px;
+  border-radius:12px;
+  text-align:center;
+  border:1px solid #00ff00;
+  color:#00ff00;
+  font-family:"Courier New", monospace;
+  position:relative;
+  box-shadow:0 0 25px #00ff00;
+}
+
+.dark-close{
+  position:absolute;
+  top:15px;
+  right:20px;
+  cursor:pointer;
+  font-size:22px;
+}
+
+/* RESET */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, Helvetica, sans-serif;
+  scroll-behavior:smooth;
+}
+
+body{
+  min-height:100vh;
+  color:white;
+  background-image: url("https://media.discordapp.net/attachments/1451033256857436261/1474816063299387424/CE73055B-5E32-424C-89D7-A154A1789A5A.png?ex=699b38fe&is=6999e77e&hm=a2aefe040111ef5ce0ce0f6bf98acc534661590ab3007cc0684048008235ef00&=&format=webp&quality=lossless");
+  background-position:center;
+  background-size:cover;
+  background-repeat:no-repeat;
+}
+
+/* SIDEBAR */
+.sidebar{
+  position:fixed;
+  left:0;
+  top:0;
+  width:250px;
+  height:100%;
+  background:#000;
+  padding:30px 20px;
+  border-right:1px solid rgba(255,255,255,.1);
+}
+
+.sidebar h3{
+  margin-bottom:20px;
+  letter-spacing:3px;
+  border-bottom:1px solid rgba(255,255,255,.2);
+  padding-bottom:10px;
+}
+
+.role-box{ margin-bottom:30px; }
+
+.role-box h4{
+  margin-bottom:15px;
+  letter-spacing:2px;
+}
+
+.member{
+  background:#111;
+  padding:10px;
+  border-radius:6px;
+  margin-bottom:10px;
+  transition:.3s;
+}
+
+.member:hover{
+  background:white;
+  color:black;
+  transform:translateX(5px);
+}
+
+/* HEADER */
+header{
+  position:fixed;
+  top:0;
+  left:250px;
+  width:calc(100% - 250px);
+  padding:20px 40px;
+  display:flex;
+  justify-content:flex-end;
+  gap:20px;
+  background:#111;
+  z-index:1000;
+}
+
+header a{
+  background:white;
+  color:black;
+  padding:10px 22px;
+  border-radius:6px;
+  text-decoration:none;
+  font-weight:bold;
+  transition:.3s;
+}
+
+header a:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 20px #fff;
+}
+
+/* HERO */
+.hero{
+  padding-top:180px;
+  margin-left:250px;
+  text-align:center;
+}
+
+.hero h1{
+  display:inline-block;
+  font-size:1.5rem;   /* 👈 más pequeño */
+  margin-bottom:20px;
+  background:white;
+  color:black;
+  padding:8px 25px;   /* 👈 menos padding */
+  border-radius:8px;
+  font-weight:bold;
+  letter-spacing:2px;
+  box-shadow:0 0 15px rgba(255,255,255,0.5);
+  transition:0.3s;
+  cursor:pointer;
+}
+
+.hero h1:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 25px white;
+}
+
+/* STATS */
+.stats{
+  margin-top:60px;
+  display:flex;
+  justify-content:center;
+  gap:100px;
+  flex-wrap:wrap;
+}
+
+.stat{
+  text-align:center;
+}
+
+.stat h2{
+  font-size:2.3rem;
+}
+
+.stat span{
+  font-size:.8rem;
+  opacity:.7;
+  letter-spacing:3px;
+}
+
+.stat.red{
+  color:#ff0000;
+  text-shadow:0 0 15px #ff0000;
+}
+
+/* SECTION */
+.section{
+  margin-top:120px;
+  margin-left:250px;
+  padding:0 8%;
+  text-align:center;
+}
+
+.section h2{
+  margin-bottom:60px;
+  letter-spacing:3px;
+  font-size:1.8rem;
+}
+
+/* GRID */
+.boxes{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:40px;
+}
+
+.box{
+  background:#222;
+  border:1px solid rgba(255,255,255,.2);
+  padding:30px;
+  border-radius:12px;
+  transition:.3s;
+}
+
+.box:hover{
+  transform:translateY(-10px);
+  box-shadow:0 0 20px #fff;
+}
+
+/* BOTONES COMUNIDAD */
+.community-buttons{
+  margin-top:70px;
+  display:flex;
+  gap:30px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+.community-buttons button{
+  background:#111;
+  color:white;
+  padding:14px 30px;
+  border:1px solid rgba(255,255,255,.3);
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:.3s;
+}
+
+.community-buttons button:hover{
+  background:white;
+  color:white;
+  box-shadow:0 0 20px #fff;
+}
+
+/* REGLAS */
+.reglas{
+  margin:120px 0;
+  margin-left:250px;
+  padding:0 15%;
+  text-align:center;
+}
+
+.reglas-box{
+  background:#111;
+  padding:40px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.2);
+  line-height:1.8;
+}
+.reglas h2{
+  display:inline-block;
+  background:white;
+  color:black;
+  padding:10px 30px;
+  border-radius:8px;
+  font-size:1.4rem;
+  letter-spacing:2px;
+  margin-bottom:40px;
+  font-weight:bold;
+  box-shadow:0 0 15px rgba(255,255,255,0.6);
+  transition:0.3s;
+  cursor:pointer;
+}
+
+.reglas h2:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 25px white;
+}
+
+/* MODAL */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+
+.modal-content{
+  background:#111;
+  padding:40px;
+  width:400px;
+  border-radius:12px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,.2);
+  position:relative;
+}
+
+.modal-content a{
+  background:white;
+  color:white;
+  padding:12px 25px;
+  border-radius:6px;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.close{
+  position:absolute;
+  top:15px;
+  right:20px;
+  cursor:pointer;
+  font-size:22px;
+}
+
+@media(max-width:900px){
+  .boxes{ grid-template-columns:1fr; }
+  .sidebar{ display:none; }
+  header{ left:0; width:100%; }
+  .hero, .section, .reglas{ margin-left:0; }
+}
+
+ /* ===== DARK WEB ADM ===== */
+
+.darkweb{
+    background:#000;
+    padding:80px 8%;
+    text-align:center;
+    color:#00ff00;
+    font-family:"Courier New", monospace;
+    margin-left:250px;
+}
+
+.warning{
+    color:red;
+    font-size:28px;
+    text-shadow:0 0 10px red;
+}
+
+.warning-text{
+    color:#ff4d4d;
+    margin-bottom:40px;
+}
+
+.dark-title{
+    font-size:32px;
+    margin-bottom:50px;
+    text-shadow:0 0 15px #00ff00;
+}
+
+.dark-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    gap:25px;
+    max-width:1200px;
+    margin:auto;
+}
+
+.dark-box{
+    background:#111;
+    border:1px solid #00ff00;
+    padding:15px;
+    transition:0.3s;
+    box-shadow:0 0 10px #00ff00;
+}
+
+.dark-box:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 25px #00ff00;
+}
+
+.dark-box img{
+    width:100%;
+    height:150px;
+    object-fit:cover;
+    border:1px solid #00ff00;
+}
+
+.dark-box h3{
+    margin:10px 0 5px;
+}
+
+.dark-box p{
+    font-weight:bold;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<div class="sidebar">
+  <h3>Owners ADM</h3>
+
+  <div class="role-box">
+    <h4>👑 OWNER</h4>
+    <div class="member">Sr Sharky</div>
+    <div class="member">ᗪᑭ _ᗩᗪᗰ♰</div>
+  </div>
+
+  <div class="role-box">
+    <h4>⚔️ CO-OWNERS</h4>
+    <div class="member">𝑰𝑺𝑬𝑫𝑾𝑰𝑵 𝑭𝑨𝑳𝑻𝑶𝑵</div>
+    <div class="member">𝑨𝑫𝑴 𝑱𝑼𝑵𝑰𝑶𝑹</div>
+    <div class="member">𝑾𝒉𝒚𝒂𝒏</div>
+    <div class="member">𝑪𝒍𝒐𝒖𝒅$</div>
+    <div class="member">𝐃𝐫𝐚𝐤𝐨𝐏𝐯!</div>
+    <div class="member">𝒀𝒂𝒅𝒊𝒙</div>
+  </div>
+</div>
+
+<header>
+  <a href="https://discord.gg/NQJdmmhpMs" target="_blank">DISCORD ADM</a>
+  <a href="#reglas">REGLAS</a>
+</header>
+
+<section class="hero">
+  <h1>👹𝑨𝑫𝑽𝑬𝑹𝑺𝑨𝑹𝑰𝑶𝑺 𝑨𝑫𝑴👹</h1>
+  <p>𝑷𝒐𝒓 𝒍𝒂 𝒕𝒓𝒂𝒄𝒊𝒐𝒏 𝑵𝒂𝒄𝒊𝒐 𝑨𝑫𝑴</p>
+  <p>.𝖌𝖌/𝖆𝖉𝖛𝖊𝖗𝖘𝖆𝖗𝖎𝖔𝖘𝖆𝖉𝖒</p>
+
+  <div class="stats">
+    <div class="stat">
+      <h2>150+</h2>
+      <span>MIEMBROS</span>
+    </div>
+
+    <div class="stat red">
+      <h2>24/7</h2>
+      <span>ACTIVO</span>
+    </div>
+
+    <div class="stat">
+      <h2>#1</h2>
+      <span>COMUNIDAD</span>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>¿Por qué unirte a ADM?</h2>
+
+  <div class="boxes">
+    <div class="box">Disponemos de herramientas como Multi Tools que mejoran la organización y la eficiencia en operaciones dentro de la comunidad..</div>
+    <div class="box">Comunidad de FiveM siempre activa, jugando todos juntos
+      y apoyándonos en cualquier servidor..</div>
+    <div class="box">Contamos con muchos voice donde puedes pasar el tiempo
+      en privado con tu coro sin presión..</div>
+    <div class="box">Tenemos personas encargadas de Citizen, Bloods, Tracer
+      y muchas cosas más relacionadas con FiveM..</div>
+    <div class="box">Unirte a ADM significa formar parte de una organización estructurada y activa dentro de FiveM.</div>
+    <div class="box">En ADM tendrás oportunidades reales de crecimiento dentro de una jerarquía organizada y respetada..</div>
+  </div>
+
+  <div class="community-buttons">
+    <button onclick="openModal('hdd')">Comunidad HDD</button>
+    <button onclick="openModal('way')">Comunidad 68WAY</button>
+  </div>
+</section>
+
+<section id="reglas" class="reglas">
+  <h2>📜 REGLAS ADM</h2>
+  <div class="reglas-box">
+    1. 𝖳𝗋𝖺𝗍𝖺𝗋 𝖺 𝗍𝗈𝖽𝗈𝗌 𝗅𝗈𝗌 𝗆𝗂𝖾𝗆𝖻𝗋𝗈𝗌 𝖼𝗈𝗇 𝗋𝖾𝗌𝗉𝖾𝗍𝗈. 𝖭𝖮 𝗌𝖾 𝗏𝖺 𝖺 𝗍𝗈𝗅𝖾𝗋𝖺𝗋 𝖾𝗅 𝖺𝖼𝗈𝗌𝗈, 𝗅𝖺 𝖽𝗂𝗌𝖼𝗋𝗂𝗆𝗂𝗇𝖺𝖼𝗂𝗈́𝗇, 𝗇𝗂 𝖾𝗅 𝖼𝗈𝗆𝗉𝗈𝗋𝗍𝖺𝗆𝗂𝖾𝗇𝗍𝗈 𝗈𝖿𝖾𝗇𝗌𝗂𝗏𝗈..<br>
+    2. 𝖬𝖺𝗇𝗍𝖾́𝗇 𝖾𝗅 𝖼𝗈𝗇𝗍𝖾𝗇𝗂𝖽𝗈 𝖽𝖾 𝖼𝗈𝗇𝗏𝖾𝗋𝗌𝖺𝖼𝗂𝗈𝗇𝖾𝗌 𝗒 𝗆𝖾𝖽𝗂𝗈𝗌 𝖽𝖾𝗇𝗍𝗋𝗈 𝖽𝖾 𝗅𝖺𝗌 𝗇𝗈𝗋𝗆𝖺𝗌 𝖽𝖾 𝗅𝖺 𝖼𝗈𝗆𝗎𝗇𝗂𝖽𝖺𝖽 𝗒 𝖾𝗏𝗂𝗍𝖺 𝖾𝗅 𝖼𝗈𝗇𝗍𝖾𝗇𝗂𝖽𝗈 𝖭𝖲𝖥𝖶 𝗈 𝗂𝗅𝖾𝗀𝖺𝗅..<br>
+    3. 𝖤𝗏𝗂𝗍𝖺 𝖾𝗇𝗏𝗂𝖺𝗋 𝗌𝗉𝖺𝗆, 𝖾𝗇𝗅𝖺𝖼𝖾𝗌 𝗂𝗋𝗋𝖾𝗅𝖾𝗏𝖺𝗇𝗍𝖾𝗌 𝗈 𝗉𝗋𝗈𝗆𝗈𝖼𝗂𝗈𝗇𝖾𝗌 𝖭𝖮 𝖺𝗎𝗍𝗈𝗋𝗂𝗓𝖺𝖽𝖺𝗌 𝗉𝗈𝗋 𝗎𝗇 𝗆𝗈𝖽𝖾𝗋𝖺𝖽𝗈𝗋.<br>
+    4. 𝖱𝖾𝗌𝗉𝖾𝗍𝖺𝗋 𝖺 los que tienen mas rango que tu  𝗒 𝗌𝖾𝗀𝗎𝗂𝗋 𝗌𝗎𝗌 𝗋𝖾𝗀𝗅𝖺𝗌 𝖾𝗇 𝗍𝗈𝖽𝗈 𝗆𝗈𝗆𝖾𝗇𝗍𝗈. 𝖫𝗈𝗌 𝗆𝗈𝖽𝖾𝗋𝖺𝖽𝗈𝗋𝖾𝗌 𝗌𝗈𝗇 𝗎𝗇𝖺 𝗉𝗂𝖾𝗓𝖺 𝗆𝗎𝗒 𝗂𝗆𝗉𝗈𝗋𝗍𝖺𝗇𝗍𝖾 𝗉𝖺𝗋𝖺 𝗆𝖺𝗇𝗍𝖾𝗇𝖾𝗋 𝖾𝗅 𝗈𝗋𝖽𝖾𝗇, 𝗋𝖾𝗌𝗉𝖾𝗍𝗈 𝗒 𝖾𝗅 𝖺𝗆𝖻𝗂𝖾𝗇𝗍𝖾 𝖺𝖽𝖾𝖼𝗎𝖺𝖽𝗈 𝖾𝗇 𝗇𝗎𝖾𝗌𝗍𝗋𝗈 𝖾𝗇𝗍𝗈𝗋𝗇𝗈..<br>
+    5. 𝖫𝗈 𝗆𝖺́𝗌 𝗂𝗆𝗉𝗈𝗋𝗍𝖺𝗇𝗍𝖾; ¡𝖽𝗂𝗌𝖿𝗋𝗎𝗍𝖺 𝗒 𝖽𝗂𝗏𝗂𝖾́𝗋𝗍𝖾𝗍𝖾 𝖼𝗈𝗇 𝗇𝗈𝗌𝗈𝗍𝗋𝗈𝗌!.
+  </div>
+</section>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">✖</span>
+    <h3 id="modalTitle"></h3>
+    <p id="modalText"></p>
+    <a id="modalLink" target="_blank">Ir al Discord</a>
+  </div>
+</div>
+
+<script>
+function openModal(type){
+  const modal = document.getElementById("modal");
+  const title = document.getElementById("modalTitle");
+  const text = document.getElementById("modalText");
+  const link = document.getElementById("modalLink");
+
+  if(type === "hdd"){
+    title.innerText = "Comunidad HDD";
+    text.innerText = "We offer? Postulaciones, Citizens, Sp, Optimizaciones. Soundpacks selling, Partners.";
+    link.href = "https://discord.gg/BEcw82wr9b";
+    link.innerText = "Discord HDD";
+  }
+
+  if(type === "way"){
+    title.innerText = "Comunidad 68WAY";
+    text.innerText = "Somos una comunidad activa y en crecimiento, llena de personas buena onda, siempre dispuestas a ayudar, jugar y pasarla bien contigo.";
+    link.href = "https://discord.gg/ZXpPmxDjPC";
+    link.innerText = "Discord 68WAY";
+  }
+
+  modal.style.display = "flex";
+}
+
+function closeModal(){
+  document.getElementById("modal").style.display = "none";
+}
+
+</script>
+<!-- DARK WEB ADM -->
+<section class="darkweb">
+
+  <h2 class="warning">⚠ ADVERTENCIA ⚠</h2>
+  <p class="warning-text">
+    ADM informa que todos los productos y servicios ofrecidos en la sección STORE están destinados únicamente para fines educativos, de desarrollo, pruebas autorizadas y aprendizaje técnico. Al adquirir cualquier producto digital, el usuario acepta que: Es el único responsable del uso que le dé. Se compromete a utilizarlo de manera legal y ética. No lo empleará para causar daños, interrupciones, acoso o afectaciones a terceros, plataformas o servidores. Cumplirá con las leyes y regulaciones vigentes en su país. ADM no se hace responsable por el uso indebido, ilegal o malintencionado que cualquier persona pueda realizar con los productos adquiridos. Si no estás de acuerdo con estos términos, te recomendamos no continuar con la compra..
+  </p>
+
+  <h2 class="dark-title">🕶 DARK WEB ADM 🕶</h2>
+
+  <div class="dark-grid">
+
+    <div class="dark-box" onclick="openDarkModal('🛒︲𝑹𝒂𝒊𝒅 𝑨𝑫𝑴', 'discord raid soon.')">
+      <img src="https://cdn.discordapp.com/emojis/1195428758484693252.webp?size=96&animated=true">
+      <h3>🛒︲𝑹𝒂𝒊𝒅 𝑨𝑫𝑴</h3>
+      <p>$0</p>
+    </div>
+
+    <div class="dark-box" onclick="openDarkModal('🛒︲𝑫𝒊𝒔𝒄𝒐𝒓𝒅-𝑪𝒍𝒐𝒏𝒆𝒓-𝑨𝑫𝑴', 'Herramienta avanzada para clonar servidores de discord .')">
+      <img src="https://media.discordapp.net/attachments/1461155399188221952/1472302293306048554/image.png?ex=699213dc&is=6990c25c&hm=34bd2449ff00cfb27fe618177b29aeda395a07522cf1c302fb6aa90c60f8aea5&=&format=webp&quality=lossless">
+      <h3>🛒︲𝑫𝒊𝒔𝒄𝒐𝒓𝒅-𝑪𝒍𝒐𝒏𝒆𝒓-𝑨𝑫𝑴</h3>
+      <p>$5</p>
+    </div>
+
+    <div class="dark-box" onclick="openDarkModal('🛒︲𝑨𝑫𝑴-𝑵𝒆𝒕', 'pakete que contiene herraientas de ataque y spamer ubicacion check.')">
+      <img src="https://cdn.discordapp.com/attachments/1471675542708289672/1472302743892001014/image.png?ex=69921448&is=6990c2c8&hm=3e7f6026aeb8e5331c84b87b843d80c2ebd8356d3ee32ba07dde17f5411d242b&">
+      <h3>🛒︲𝑨𝑫𝑴-𝑵𝒆𝒕</h3>
+      <p>$45</p>
+    </div>
+
+    <div class="dark-box" onclick="openDarkModal('🛒︲𝑴𝒖𝒍𝒕𝒊-𝑻𝒐𝒐𝒍𝒔', 'spammer de discord.')">
+      <img src="https://cdn.discordapp.com/attachments/1471675594621190386/1472307357144059934/image.png?ex=69921894&is=6990c714&hm=9abfc6bfaaefc29ec7ca3bd6dbd3fcc358b4d6304cf7d116fae51ff20ef4dcd9&">
+      <h3>🛒︲𝑴𝒖𝒍𝒕𝒊-𝑻𝒐𝒐𝒍𝒔</h3>
+      <p>$20</p>
+    </div>
+
+    <div class="dark-box" onclick="openDarkModal('🛒︲𝑨𝑫𝑴-𝑺𝒕𝒖𝒇𝒇', 'Herramienta que contienene scan dm spammer ip logger, ip lookup id lookup.')">
+      <img src="https://media.discordapp.net/attachments/1471676001145590005/1472307857771860193/image.png?ex=6992190b&is=6990c78b&hm=a663147e25d49e3d5794c1353634b49639c3ac12876ae6981ad81f7d18c0fecf&=&format=webp&quality=lossless">
+      <h3>🛒︲𝑨𝑫𝑴-𝑺𝒕𝒖𝒇𝒇</h3>
+      <p>$30</p>
+    </div>
+
+    <div class="dark-box" onclick="openDarkModal('🛒︲𝑨𝑫𝑴-𝒌𝒊𝒕', 'Herramienta que sirve mas para revisar cosas de tu pc para ver system info  clear chache y temp.')">
+      <img src="https://media.discordapp.net/attachments/1471676076370559006/1472308228842061865/image.png?ex=69921963&is=6990c7e3&hm=21928d60083a4783de7626706bb76a821325206efd528c1872dd90bde3bd93b4&=&format=webp&quality=lossless">
+      <h3>🛒︲𝑨𝑫𝑴-𝒌𝒊𝒕t</h3>
+      <p>$15</p>
+    </div>
+
+    <div class="dark-box" onclick="openDarkModal('🛒︲𝑫𝒊𝒔𝒄𝒐𝒓𝒅-𝑻𝒐𝒐𝒍', 'Herramienta que sirve para spamiar discord nada mas teniendo el webhook del canal.')">
+      <img src="https://media.discordapp.net/attachments/1471676553074049034/1472308588213964852/image.png?ex=699219b9&is=6990c839&hm=bc13735c995c4fe7d29a279bdc855e4db82217478f71deb7a1fb4e8c378115e7&=&format=webp&quality=lossless">
+      <h3>🛒︲𝑫𝒊𝒔𝒄𝒐𝒓𝒅-𝑻𝒐𝒐𝒍</h3>
+      <p>$10</p>
+    </div>
+
+    <div class="dark-box" onclick="openDarkModal('🛒︲𝑨𝑫𝑴-𝑵𝒊𝒙', 'ADM.Nix <1> Key logger <2> Ip Logger <3> Wifi logger <4> History logger <5> Rat builder <6> Next page.')">
+      <img src="https://media.discordapp.net/attachments/1471676621416300575/1472309662111236310/image.png?ex=69921ab9&is=6990c939&hm=1b4b228b2f1666e84c972c7a268911defa708e3b046b41f7de98a691bc533ad4&=&format=webp&quality=lossless">
+      <h3>🛒︲𝑨𝑫𝑴-𝑵𝒊𝒙</h3>
+      <p>$25</p>
+    </div>
+
+    <div class="dark-box" onclick="openDarkModal('🛒︲𝑨𝑫𝑴-𝑬𝒙𝒑𝒍𝒐𝒊𝒕', 'ADM exploiit 1 Upload code 2 Check if server is active  3 Exit.')">
+      <img src="https://media.discordapp.net/attachments/1471676121606131743/1471680004189589524/image.png?ex=6991ca8f&is=6990790f&hm=99cdfb8407e59d9797ee1161873e444a5cc266fe48bf334bf0e291812fb093d2&=&format=webp&quality=lossless&width=720&height=397">
+      <h3>🛒︲𝑨𝑫𝑴-𝑬𝒙𝒑𝒍𝒐𝒊𝒕</h3>
+      <p>$10</p>
+    </div>
+
+    <div class="dark-box" onclick="openDarkModal('🛒︲𝒊𝒏𝒕𝒓𝒐𝒔-𝒊𝒏𝒅𝒆𝒕𝒔', 'intros personalizadas a tu gusta mas de 100+ de variedad.')">
+      <img src="https://media.discordapp.net/attachments/1459018103433461821/1472311485547020461/image.png?ex=69921c6c&is=6990caec&hm=3cc60e8e719f5eb2796479482a92853bea9e606aa2cdef3e60a4608d28f28229&=&format=webp&quality=lossless">
+      <h3>🛒︲𝒊𝒏𝒕𝒓𝒐𝒔-𝒊𝒏𝒅𝒆𝒕𝒔</h3>
+      <p>$5</p>
+    </div>
+
+  </div>
+</section>
+
+</section>
+
+<!-- DARK WEB MODAL -->
+<div class="dark-modal" id="darkModal" onclick="closeDarkModal(event)">
+  <div class="dark-modal-content">
+    <span class="dark-close" onclick="closeDarkModal()">✖</span>
+    <h3 id="darkModalTitle"></h3>
+    <p id="darkModalDesc"></p>
+  </div>
+</div>
+
+<script>
+function openDarkModal(title, desc){
+  document.getElementById("darkModalTitle").innerText = title;
+  document.getElementById("darkModalDesc").innerText = desc;
+  document.getElementById("darkModal").style.display = "flex";
+}
+
+function closeDarkModal(e){
+  if(!e || e.target.id === "darkModal"){
+    document.getElementById("darkModal").style.display = "none";
+  }
+}
+</script>
+
+
+</script>
+
+</body>
+</html>
